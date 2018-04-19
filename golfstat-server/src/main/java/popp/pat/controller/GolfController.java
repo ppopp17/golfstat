@@ -6,6 +6,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.ibatis.session.SqlSession;
+
+import popp.pat.SQLiteDriverConnection;
 import popp.pat.model.Stats;
 
 @Path("/rest")
@@ -23,10 +26,14 @@ public class GolfController {
 	@Path("/stats")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Stats getStats() {
- 
+		SQLiteDriverConnection.getSession();
+		
+		SqlSession session = SQLiteDriverConnection.getSession().openSession();
+        Integer numberOfGolfers = session.selectOne("golfstat.getNumberOfGolfers");
+        
 		Stats stats = new Stats();
 		stats.setNumberOfCourses(1);
-		stats.setNumberOfPlayers(4);
+		stats.setNumberOfPlayers(numberOfGolfers);
 		return stats;
  
 	}

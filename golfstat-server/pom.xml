@@ -44,6 +44,11 @@
     	<artifactId>jersey-json</artifactId>
     	<version>1.8</version>
     </dependency>
+	  <dependency>
+	  	<groupId>org.mybatis</groupId>
+	  	<artifactId>mybatis</artifactId>
+	  	<version>3.4.2</version>
+	  </dependency>
   </dependencies>
   <build>
     <finalName>golfstat-server</finalName>
