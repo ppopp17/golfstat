@@ -9,4 +9,8 @@
         SELECT count(*) from golfer
     </select>
     
+    <select id="getNumberOfCourses" resultType="Integer">
+        SELECT count(*) from course
+    </select>
+    
 </mapper>
