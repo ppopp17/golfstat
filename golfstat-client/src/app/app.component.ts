@@ -19,11 +19,12 @@ export class AppComponent implements OnInit {
     private statsService: StatsService,
     private messageService: MessageService
     //protected router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.statsService.getStats().subscribe(
       data => {
+        console.log(data);
         this.stats = data;
       },
       err => {

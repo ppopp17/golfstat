@@ -27,7 +27,7 @@ public class GolfstatDAO {
                 session.close();
             }
         }
-		return stats;
-		//return null;
+		//return stats;
+		return null;
 	}
 }
