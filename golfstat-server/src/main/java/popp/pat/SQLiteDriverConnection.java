@@ -13,7 +13,7 @@ public class SQLiteDriverConnection {
 	private static Connection conn;
 	private static SqlSessionFactory sqlSessionFactory;
 
-	public static Connection getConnection() {
+/*	public static Connection getConnection() {
 		if(conn == null) {
 			try {
 				String url = "jdbc:sqlite:C:/Users/ppopp.UTCDA/Google Drive/Home/golfScored.db3";
@@ -28,17 +28,8 @@ public class SQLiteDriverConnection {
 			}
 		}
 		return conn;
-		/*finally {
-			try {
-				if(conn != null) {
-					conn.close();
-				}
-			}
-			catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
-		}*/
 	}
+*/
 	
 	public static SqlSessionFactory getSession() {
 		if(sqlSessionFactory == null) {

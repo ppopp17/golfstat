@@ -1,6 +1,10 @@
 package popp.pat.controller;
 
+import java.util.List;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -11,6 +15,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import popp.pat.SQLiteDriverConnection;
 import popp.pat.dao.GolfstatDAO;
+import popp.pat.model.Golfer;
 import popp.pat.model.Stats;
 
 @Path("/rest")
@@ -40,16 +45,25 @@ public class GolfController {
 	@GET
 	@Path("/getGolfers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Stats getGolfers() {
-		SQLiteDriverConnection.getSession();
-		
-		SqlSession session = SQLiteDriverConnection.getSession().openSession();
-        Integer numberOfGolfers = session.selectOne("golfstat.getNumberOfGolfers");
-        Integer numberOfCourses = session.selectOne("golfstat.getNumberOfCourses");
-        
-		Stats stats = new Stats();
-		stats.setNumberOfCourses(numberOfCourses);
-		stats.setNumberOfPlayers(numberOfGolfers);
-		return stats;
+	public List<Golfer> getGolfers() {
+		List<Golfer> golfers = GolfstatDAO.getAllGolfers();
+		if(golfers == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return golfers;
+	}
+
+	@POST
+	@Path("/addNewGolfers")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Golfer addNewGolfers(Golfer golfer) {
+		Golfer newGolfer = GolfstatDAO.addNewGolfer(golfer);
+		if(newGolfer == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return newGolfer;
 	}
 }

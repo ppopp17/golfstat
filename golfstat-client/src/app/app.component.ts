@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { StatsService } from './stats.service';
-import { Stats } from './model/stats';
 import { Message, GrowlModule } from 'primeng/primeng';
-import { MessageService } from 'primeng/components/common/messageservice';
+import {MenubarModule} from 'primeng/menubar';
+import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -12,28 +11,25 @@ import { MessageService } from 'primeng/components/common/messageservice';
 
 export class AppComponent implements OnInit {
   title = 'Popp Golf Stats';
-  stats: Stats;
   msgs: Message[] = [];
+  items: MenuItem[];
 
   constructor(
-    private statsService: StatsService,
-    private messageService: MessageService
-    //protected router: Router
   ) { }
 
   ngOnInit(): void {
-    this.statsService.getStats().subscribe(
-      data => {
-        console.log(data);
-        this.stats = data;
+    this.items = [
+      {
+        label: 'Admin',
+        items: [
+          {label: 'Rounds', icon: 'fa-calendar-plus', routerLink: ['/rounds']},
+          {label: 'Golfers', icon: 'fa-user', routerLink: ['/golfers']},
+          {label: 'Courses', icon: 'fa-golf-ball', routerLink: ['/courses']}
+        ]
       },
-      err => {
-        console.error(err);
-        this.messageService.add({severity:'error', summary:'Retrieve Data Error', detail:err.message});
-      },
-      () => {
-        console.log('done loading nav tree');
+      {
+        label: 'Stats', icon: 'far fa-chart-bar'
       }
-    );
+    ];
   }
 }

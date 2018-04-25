@@ -5,5 +5,5 @@
   </h1>
 </div>
 <p-growl [(value)]="msgs" [sticky]="true"></p-growl>
-Number of golfers: <span *ngIf="stats">{{stats.numberOfPlayers}}</span><br/>
-Number of courses: <span *ngIf="stats">{{stats.numberOfCourses}}</span>
+<p-menubar [model]="items"></p-menubar>
+<router-outlet></router-outlet>
