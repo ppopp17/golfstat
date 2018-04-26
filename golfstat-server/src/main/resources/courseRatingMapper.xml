@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="courseRating">
+
+  <resultMap id="courseRatingResultMap" type="popp.pat.model.CourseRating"> 
+    <result property="id" column="id" javaType="java.lang.Long"/>
+    <result property="courseId" column="course_id" javaType="java.lang.Long"/>
+    <result property="gender" column="gender" javaType="java.lang.String"/>
+    <result property="slope" column="slope" javaType="java.lang.Float"/>
+    <result property="rating" column="rating" javaType="java.lang.Float"/>
+  </resultMap>
+    
+    <select id="selectAllCourseRatingsByCourseId" statementType="PREPARED" resultMap="courseRatingResultMap">
+        SELECT * from course_rating
+        WHERE course_id = #{courseId}
+    </select>
+
+    <select id="selectNextId" resultType="Long">
+        SELECT ifnull(max(id)+1,1) from course_rating;
+    </select>
+    
+ 	<insert id="insertNewCourseRating" statementType="PREPARED" parameterType="popp.pat.model.CourseRating">
+	  INSERT INTO course_rating
+      (
+        id, 
+        course_id, 
+        gender,
+        slope,
+        rating
+      )
+      VALUES	
+      (
+        #{id}, 
+        #{courseId},
+		#{gender},
+		#{slope},
+		#{rating}
+	  )
+	</insert>
+    
+</mapper>

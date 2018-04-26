@@ -15,5 +15,8 @@
     <mappers>
         <mapper resource="mapper.xml"/>
         <mapper resource="golferMapper.xml"/>
+        <mapper resource="roundMapper.xml"/>
+        <mapper resource="courseMapper.xml"/>
+        <mapper resource="courseRatingMapper.xml"/>
     </mappers>   
 </configuration>

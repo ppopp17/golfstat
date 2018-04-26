@@ -3,7 +3,7 @@ package popp.pat.model;
 public class Round {
 	Long id;
 	String date;
-	Course course;
+	Long courseId;
 	public Long getId() {
 		return id;
 	}
@@ -16,10 +16,10 @@ public class Round {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public Course getCourse() {
-		return course;
+	public Long getCourse() {
+		return courseId;
 	}
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setCourse(Long courseId) {
+		this.courseId = courseId;
 	}
 }

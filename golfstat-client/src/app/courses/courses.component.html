@@ -1,3 +1,10 @@
-<p>
-  courses works!
-</p>
+<h3>Courses</h3>
+Course name: <input pInputText [(ngModel)]="newCourseName"/> Tees: <input pInputText [(ngModel)]="newCourseTees"/><br/>
+Men: slope <input pInputText [(ngModel)]="newCourseMensSlope"/> Rating: <input pInputText [(ngModel)]="newCourseMensRating"/><br/>
+Women: slope <input pInputText [(ngModel)]="newCourseWomensSlope"/> Rating: <input pInputText [(ngModel)]="newCourseWomensRating"/><br/>
+<button pButton type="button" label="Add Course" (click)="addCourse()"></button>
+<div *ngFor="let coursePlusRating of coursePlusRatings">
+  {{coursePlusRating.course.name}} {{coursePlusRating.course.tees}} tees,
+  {{coursePlusRating.ratings[0].gender}}: slope {{coursePlusRating.ratings[0].slope}}, rating {{coursePlusRating.ratings[0].rating}}
+  <span *ngIf="coursePlusRating.ratings[1]">{{coursePlusRating.ratings[1].gender}}: slope {{coursePlusRating.ratings[1].slope}}, rating {{coursePlusRating.ratings[1].rating}}</span>
+</div>

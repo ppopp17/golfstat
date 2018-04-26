@@ -3,8 +3,6 @@
 <p-radioButton name="genderGroup" value="male" label="male" [(ngModel)]="selectedGender"></p-radioButton>
 <p-radioButton name="genderGroup" value="female" label="female" [(ngModel)]="selectedGender"></p-radioButton>
 <button pButton type="button" label="Add Golfer" (click)="addGolfer()"></button>
-<ul>
-  <li *ngFor="let golfer of golfers">
-    <i *ngIf="golfer.gender === 'male'" class="fas fa-male"></i><i *ngIf="golfer.gender === 'female'" class="fas fa-female"></i>&nbsp;{{golfer.name}}
-  </li>
-</ul>
+<div *ngFor="let golfer of golfers">
+  <i *ngIf="golfer.gender === 'male'" class="fas fa-male"></i><i *ngIf="golfer.gender === 'female'" class="fas fa-female"></i>&nbsp;{{golfer.name}}
+</div>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="course">
+
+  <resultMap id="courseResultMap" type="popp.pat.model.Course"> 
+    <result property="id" column="id" javaType="java.lang.Long"/>
+    <result property="name" column="name" javaType="java.lang.String"/>
+    <result property="tees" column="tees" javaType="java.lang.String"/>
+  </resultMap>
+    
+    <select id="selectAllCourses" resultMap="courseResultMap">
+        SELECT * from course
+    </select>
+
+    <select id="selectNextId" resultType="Long">
+        SELECT ifnull(max(id)+1,1) from course;
+    </select>
+    
+ 	<insert id="insertNewCourse" statementType="PREPARED" parameterType="popp.pat.model.Course">
+	  INSERT INTO course
+      (
+        id, 
+        name, 
+        tees
+      )
+      VALUES	
+      (
+        #{id}, 
+        #{name},
+		#{tees}
+	  )
+	</insert>
+    
+</mapper>

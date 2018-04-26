@@ -15,6 +15,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import popp.pat.SQLiteDriverConnection;
 import popp.pat.dao.GolfstatDAO;
+import popp.pat.model.CoursePlusRatings;
 import popp.pat.model.Golfer;
 import popp.pat.model.Stats;
 
@@ -65,5 +66,30 @@ public class GolfController {
 			throw new WebApplicationException(response);
 		}
 		return newGolfer;
+	}
+	
+	@GET
+	@Path("/getCourses")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CoursePlusRatings> getCourses() {
+		List<CoursePlusRatings> coursePlusRatings = GolfstatDAO.getAllCoursesWithRatings();
+		if(coursePlusRatings == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return coursePlusRatings;
+	}
+
+	@POST
+	@Path("/addNewCourse")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CoursePlusRatings addNewCourse(CoursePlusRatings course) {
+		CoursePlusRatings newCourse = GolfstatDAO.addNewCourse(course);
+		if(newCourse == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return newCourse;
 	}
 }

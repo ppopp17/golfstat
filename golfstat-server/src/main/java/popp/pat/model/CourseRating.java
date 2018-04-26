@@ -2,7 +2,7 @@ package popp.pat.model;
 
 public class CourseRating {
 	Long id;
-	Integer courseId;
+	Long courseId;
 	String gender;
 	Float slope;
 	Float rating;
@@ -12,10 +12,10 @@ public class CourseRating {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getCourseId() {
+	public Long getCourseId() {
 		return courseId;
 	}
-	public void setCourseId(Integer courseId) {
+	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
 	public String getGender() {
