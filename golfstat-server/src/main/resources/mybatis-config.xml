@@ -18,5 +18,6 @@
         <mapper resource="roundMapper.xml"/>
         <mapper resource="courseMapper.xml"/>
         <mapper resource="courseRatingMapper.xml"/>
+        <mapper resource="holeMapper.xml"/>
     </mappers>   
 </configuration>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="hole">
+
+  <resultMap id="holeResultMap" type="popp.pat.model.Hole"> 
+    <result property="id" column="id" javaType="java.lang.Long"/>
+    <result property="courseId" column="course_id" javaType="java.lang.Long"/>
+    <result property="number" column="number" javaType="java.lang.Long"/>
+    <result property="par" column="par" javaType="java.lang.Long"/>
+    <result property="length" column="length" javaType="java.lang.Long"/>
+  </resultMap>
+    
+    <select id="selectAllHolesByCourseId" statementType="PREPARED" resultMap="holeResultMap">
+        SELECT * from hole
+        WHERE course_id = #{courseId}
+        ORDER BY number
+    </select>
+
+    <select id="selectNextId" resultType="Long">
+        SELECT ifnull(max(id)+1,1) from hole;
+    </select>
+    
+ 	<insert id="insertNewHole" statementType="PREPARED" parameterType="popp.pat.model.Hole">
+	  INSERT INTO hole
+      (
+        id, 
+        course_id, 
+        number,
+        par,
+        length
+      )
+      VALUES	
+      (
+        #{id}, 
+        #{courseId},
+		#{number},
+		#{par},
+		#{length}
+	  )
+	</insert>
+    
+</mapper>

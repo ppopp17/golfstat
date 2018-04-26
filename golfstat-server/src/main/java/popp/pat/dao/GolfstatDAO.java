@@ -146,6 +146,27 @@ public class GolfstatDAO {
 		return courseRatings;
 	}
 	
+	public static List<Hole> getAllHoles(Long courseId) {
+		List<Hole> holes = null;
+		SqlSession session = null;
+		try {
+			session = SQLiteDriverConnection.getSession().openSession();
+			Map<String,Long> params = new HashMap<String,Long>();
+			params.put("courseId", courseId);
+			holes = session.selectList("hole.selectAllHolesByCourseId", params);
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return holes;
+	}
+	
 	public static List<CoursePlusRatings> getAllCoursesWithRatings() {
 		List<CoursePlusRatings> coursePlusRatings = new ArrayList<CoursePlusRatings>();
 		List<Course> courses = getAllCourses();
@@ -153,6 +174,7 @@ public class GolfstatDAO {
 			CoursePlusRatings cpr = new CoursePlusRatings();
 			cpr.setCourse(course);
 			cpr.setRatings(getAllCourseRatings(course.getId()));
+			cpr.setHoles(getAllHoles(course.getId()));
 			coursePlusRatings.add(cpr);
 		}
 
@@ -170,6 +192,8 @@ public class GolfstatDAO {
 				newCoursePlusRatings.getCourse().setId(nextId);
 				int count = session.insert("course.insertNewCourse", newCoursePlusRatings.getCourse());
 				if(count == 1) {
+					
+					// add course ratings
 					for(CourseRating courseRating : newCoursePlusRatings.getRatings()) {
 						nextId = session.selectOne("courseRating.selectNextId");
 						if(nextId == null) {
@@ -178,6 +202,20 @@ public class GolfstatDAO {
 						courseRating.setId(nextId);
 						courseRating.setCourseId(newCoursePlusRatings.getCourse().getId());
 						count = session.insert("courseRating.insertNewCourseRating", courseRating);
+						if(count != 1) {
+							throw new Exception("was not able to insert new courseRating");
+						}
+					}
+					
+					// add holes
+					for(Hole hole : newCoursePlusRatings.getHoles()) {
+						nextId = session.selectOne("hole.selectNextId");
+						if(nextId == null) {
+							throw new Exception("was not able to get next hole Id");
+						}
+						hole.setId(nextId);
+						hole.setCourseId(newCoursePlusRatings.getCourse().getId());
+						count = session.insert("hole.insertNewHole", hole);
 						if(count != 1) {
 							throw new Exception("was not able to insert new courseRating");
 						}

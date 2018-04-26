@@ -6,6 +6,7 @@ import { StatsService } from '../stats.service';
 import { CoursePlusRating } from '../model/course-plus-rating';
 import { Course } from '../model/course';
 import { CourseRating } from '../model/course-rating';
+import { Hole } from '../model/hole';
 
 @Component({
   selector: 'app-courses',
@@ -21,6 +22,10 @@ export class CoursesComponent implements OnInit {
   newCourseWomensSlope: number;
   newCourseWomensRating: number;
   newCoursePlusRatings: CoursePlusRating;
+  showButtonText: string[];
+  showTable: boolean[];
+  selectedLength: string;
+  newHoles: Hole[];
 
   constructor(
     private statsService: StatsService,
@@ -30,6 +35,7 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.getCourses();
     this.emptyNewCourseInput();
+    this.selectedLength = "9";
   }
 
   emptyNewCourseInput() {
@@ -39,6 +45,12 @@ export class CoursesComponent implements OnInit {
     this.newCourseMensRating = undefined;
     this.newCourseWomensSlope = undefined;
     this.newCourseWomensRating = undefined;
+    this.newHoles = new Array();
+    for(let i=1; i<19; i++) {
+      let h = new Hole();
+      h.number = i;
+      this.newHoles.push(h);
+    }
   }
 
   getCourses() {
@@ -46,7 +58,14 @@ export class CoursesComponent implements OnInit {
       data => {
         console.log(data);
         this.coursePlusRatings = data;
-        console.log(this.coursePlusRatings);
+        console.log("Courses: "+this.coursePlusRatings);
+        console.log("Courses length: "+this.coursePlusRatings.length);
+        this.showButtonText = new Array();
+        this.showTable = new Array();
+        for(let i=0; i<this.coursePlusRatings.length; i++) {
+          this.showButtonText.push("Show");
+          this.showTable.push(false);
+        }
       },
       err => {
         console.error(err);
@@ -58,11 +77,32 @@ export class CoursesComponent implements OnInit {
     );
   }
 
+  toggle(id: number) {
+      console.log("toggle id="+id);
+      this.showTable[id] = !this.showTable[id];
+      if(this.showTable[id]) {
+        this.showButtonText[id] = "Hide";
+      }
+      else {
+        this.showButtonText[id] = "Show";
+      }
+  }
+
   addCourse() {
     if(this.newCourseName === "" || this.newCourseTees === "" ||
        this.newCourseMensSlope === undefined || this.newCourseMensRating === undefined) {
       this.messageService.add({severity:'warn', summary:'Add Course', detail:"Course name, tees, slope and rating all need values"});
       return;
+    }
+    let length = 9;
+    if(this.selectedLength === "18") {
+      length = 18;
+    }
+    for(let i=0; i<length; i++) {
+      if(this.newHoles[i].par === undefined || this.newHoles[i].length === undefined) {
+        this.messageService.add({severity:'warn', summary:'Add Course', detail:"Hole par and length all need values"});
+        return;
+      }
     }
 
     this.newCoursePlusRatings = new CoursePlusRating();
@@ -97,6 +137,15 @@ export class CoursesComponent implements OnInit {
       this.newCoursePlusRatings.ratings = [menRating, womenRating];
     }
     console.log(this.newCoursePlusRatings);
+
+    // add holes
+    if(this.selectedLength === "9") {
+      this.newCoursePlusRatings.holes = this.newHoles.slice(0,9);
+    }
+    else {
+      this.newCoursePlusRatings.holes = this.newHoles.slice(0);
+    }
+
     this.statsService.addNewCourse(this.newCoursePlusRatings).subscribe(
       data => {
         console.log("New course added, refreshing course list");

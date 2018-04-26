@@ -1,10 +1,37 @@
 <h3>Courses</h3>
-Course name: <input pInputText [(ngModel)]="newCourseName"/> Tees: <input pInputText [(ngModel)]="newCourseTees"/><br/>
-Men: slope <input pInputText [(ngModel)]="newCourseMensSlope"/> Rating: <input pInputText [(ngModel)]="newCourseMensRating"/><br/>
-Women: slope <input pInputText [(ngModel)]="newCourseWomensSlope"/> Rating: <input pInputText [(ngModel)]="newCourseWomensRating"/><br/>
+<table>
+  <tr>
+    <td>Course name:</td><td><input pInputText [(ngModel)]="newCourseName"/></td><td>Tees:</td><td><input pInputText [(ngModel)]="newCourseTees"/>
+  </tr>
+  <tr>
+    <td>Men: slope</td><td><input pInputText [(ngModel)]="newCourseMensSlope"/></td><td>Rating:</td><td><input pInputText [(ngModel)]="newCourseMensRating"/>
+  </tr>
+  <tr>
+    <td>Women: slope</td><td><input pInputText [(ngModel)]="newCourseWomensSlope"/></td><td>Rating:</td><td><input pInputText [(ngModel)]="newCourseWomensRating"/>
+  </tr>
+</table>
+<p-radioButton name="lengthGroup" value="9" label="9 holes" [(ngModel)]="selectedLength"></p-radioButton>
+<p-radioButton name="lengthGroup" value="18" label="18 holes" [(ngModel)]="selectedLength"></p-radioButton>
+<table>
+  <tr><th>Hole</th><th>Par</th><th>Length</th></tr>
+  <tr *ngFor="let hole of newHoles; let i = index">
+    <td *ngIf="i<9 || selectedLength === '18'">{{hole.number}}</td>
+    <td *ngIf="i<9 || selectedLength === '18'"><input pInputText [(ngModel)]="hole.par"/></td>
+    <td *ngIf="i<9 || selectedLength === '18'"><input pInputText [(ngModel)]="hole.length"/></td>
+  </tr>
+</table>
 <button pButton type="button" label="Add Course" (click)="addCourse()"></button>
-<div *ngFor="let coursePlusRating of coursePlusRatings">
+<div *ngFor="let coursePlusRating of coursePlusRatings; let i = index">
   {{coursePlusRating.course.name}} {{coursePlusRating.course.tees}} tees,
   {{coursePlusRating.ratings[0].gender}}: slope {{coursePlusRating.ratings[0].slope}}, rating {{coursePlusRating.ratings[0].rating}}
   <span *ngIf="coursePlusRating.ratings[1]">{{coursePlusRating.ratings[1].gender}}: slope {{coursePlusRating.ratings[1].slope}}, rating {{coursePlusRating.ratings[1].rating}}</span>
+  <button pButton type="button" label="{{showButtonText[i]}}" (click)="toggle(i)"></button>
+  <div *ngIf="showTable[i]">
+    <table>
+      <tr><th>Number</th><th>Par</th><th>Length</th></tr>
+      <tr *ngFor="let hole of coursePlusRating.holes">
+        <td>{{hole.number}}</td><td>{{hole.par}}</td><td>{{hole.length}}</td>
+      </tr>
+    </table>
+  </div>
 </div>
