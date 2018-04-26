@@ -16,10 +16,10 @@ public class Round {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public Long getCourse() {
+	public Long getCourseId() {
 		return courseId;
 	}
-	public void setCourse(Long courseId) {
+	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
 }

@@ -22,13 +22,14 @@ export class AppComponent implements OnInit {
       {
         label: 'Admin',
         items: [
-          {label: 'Rounds', icon: 'fa-calendar-plus', routerLink: ['/rounds']},
+          {label: 'Rounds', icon: 'fas fa-calendar-plus', routerLink: ['/rounds']},
           {label: 'Golfers', icon: 'fa-user', routerLink: ['/golfers']},
-          {label: 'Courses', icon: 'fa-golf-ball', routerLink: ['/courses']}
+          {label: 'Courses', icon: 'fas fa-flag', routerLink: ['/courses']},
+          {label: 'Scores', icon: 'fa-golf-ball', routerLink: ['/scores']}
         ]
       },
       {
-        label: 'Stats', icon: 'far fa-chart-bar'
+        label: 'Stats', icon: 'fas fa-chart-bar'
       }
     ];
   }

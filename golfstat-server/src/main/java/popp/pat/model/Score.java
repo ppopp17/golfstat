@@ -1,0 +1,39 @@
+package popp.pat.model;
+
+public class Score {
+	private Long id;
+	private Long holeId;
+	private Long golferId;
+	private Long score;
+	private Long putts;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getHoleId() {
+		return holeId;
+	}
+	public void setHoleId(Long holeId) {
+		this.holeId = holeId;
+	}
+	public Long getGolferId() {
+		return golferId;
+	}
+	public void setGolferId(Long golferId) {
+		this.golferId = golferId;
+	}
+	public Long getScore() {
+		return score;
+	}
+	public void setScore(Long score) {
+		this.score = score;
+	}
+	public Long getPutts() {
+		return putts;
+	}
+	public void setPutts(Long putts) {
+		this.putts = putts;
+	}
+}

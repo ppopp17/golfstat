@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="score">
+
+  <resultMap id="scoreResultMap" type="popp.pat.model.Score"> 
+    <result property="id" column="id" javaType="java.lang.Long"/>
+    <result property="holeId" column="hole_id" javaType="java.lang.Long"/>
+    <result property="golferId" column="golfer_id" javaType="java.lang.Long"/>
+    <result property="score" column="score" javaType="java.lang.Long"/>
+    <result property="putts" column="putts" javaType="java.lang.Long"/>
+  </resultMap>
+    
+    <select id="selectAllScoresForRound" resultMap="scoreResultMap">
+        SELECT * from score
+        WHERE round_id = #{roundId}
+    </select>
+
+    <select id="selectNextId" resultType="Long">
+        SELECT ifnull(max(id)+1,1) from score;
+    </select>
+    
+ 	<insert id="insertNewScore" statementType="PREPARED" parameterType="popp.pat.model.Score">
+	  INSERT INTO round
+      (
+        id, 
+        hole_id, 
+        golfer_id,
+        score,
+        putts
+      )
+      VALUES	
+      (
+        #{id}, 
+        #{holeId},
+		#{golferId},
+		#{score},
+		#{putts}
+	  )
+	</insert>
+    
+</mapper>

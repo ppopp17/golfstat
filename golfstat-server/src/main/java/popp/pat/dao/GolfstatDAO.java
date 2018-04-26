@@ -8,7 +8,15 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import popp.pat.SQLiteDriverConnection;
-import popp.pat.model.*;
+import popp.pat.model.Course;
+import popp.pat.model.CoursePlusRatings;
+import popp.pat.model.CourseRating;
+import popp.pat.model.Golfer;
+import popp.pat.model.Hole;
+import popp.pat.model.Round;
+import popp.pat.model.RoundAndCourse;
+import popp.pat.model.Score;
+import popp.pat.model.Stats;
 
 public class GolfstatDAO {
 
@@ -87,12 +95,19 @@ public class GolfstatDAO {
 		
 	}
 
-	public static List<Round> getAllRounds() {
-		List<Round> rounds = null;
+	public static List<RoundAndCourse> getAllRounds() {
+		List<RoundAndCourse> roundAndCourses = new ArrayList<RoundAndCourse>();
 		SqlSession session = null;
 		try {
 			session = SQLiteDriverConnection.getSession().openSession();
-			rounds = session.selectList("round.selectAllRounds");
+			List<Round> rounds = session.selectList("round.selectAllRounds");
+			for(Round round : rounds) {
+				CoursePlusRatings coursePlusRatings = getCoursesWithRatingsById(round.getCourseId());
+				RoundAndCourse rac = new RoundAndCourse();
+				rac.setCoursePlusRatings(coursePlusRatings);
+				rac.setRound(round);
+				roundAndCourses.add(rac);
+			}
 		}
 		catch(Exception e) {
 			System.out.print(e.getMessage());
@@ -103,7 +118,7 @@ public class GolfstatDAO {
             }
         }
 
-		return rounds;
+		return roundAndCourses;
 	}
 	
 	public static List<Course> getAllCourses() {
@@ -112,6 +127,27 @@ public class GolfstatDAO {
 		try {
 			session = SQLiteDriverConnection.getSession().openSession();
 			course = session.selectList("course.selectAllCourses");
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return course;
+	}
+	
+	public static Course getCourseById(Long id) {
+		Course course = null;
+		SqlSession session = null;
+		try {
+			session = SQLiteDriverConnection.getSession().openSession();
+			Map<String,Long> params = new HashMap<String,Long>();
+			params.put("id", id);
+			course = session.selectOne("course.selectCourseById", params);
 		}
 		catch(Exception e) {
 			System.out.print(e.getMessage());
@@ -181,6 +217,18 @@ public class GolfstatDAO {
 		return coursePlusRatings;
 	}
 	
+	public static CoursePlusRatings getCoursesWithRatingsById(Long id) {
+		CoursePlusRatings cpr = null;
+		Course course = getCourseById(id);
+		if(course != null) {
+			cpr = new CoursePlusRatings();
+			cpr.setCourse(course);
+			cpr.setRatings(getAllCourseRatings(course.getId()));
+			cpr.setHoles(getAllHoles(course.getId()));
+		}
+		return cpr;
+	}
+	
 	public static CoursePlusRatings addNewCourse(CoursePlusRatings newCoursePlusRatings) {
 		CoursePlusRatings success = null;
 		SqlSession session = null;
@@ -224,6 +272,38 @@ public class GolfstatDAO {
 					session.commit();
 				}
 			}
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return success;
+	}
+	
+	public static List<Score> addNewScores(List<Score> scores) {
+		List<Score> success = null;
+		SqlSession session = null;
+
+		try {
+			session = SQLiteDriverConnection.getSession().openSession();
+			for(Score score : scores) {
+				Long nextId = session.selectOne("score.selectNextId");
+				if(nextId == null) {
+					throw new Exception("was not able to get next score Id");
+				}
+				score.setId(nextId);
+				int count = session.insert("score.insertNewScore", score);
+				if(count != 1) {
+					throw new Exception("was not able to insert new score");
+				}
+			}
+			session.commit();
+			success = scores;
 		}
 		catch(Exception e) {
 			System.out.print(e.getMessage());

@@ -8,6 +8,7 @@ import { GrowlModule } from 'primeng/primeng';
 import {MenubarModule} from 'primeng/menubar';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {ButtonModule} from 'primeng/button';
+import {DropdownModule} from 'primeng/dropdown';
 
 import { AppComponent } from './app.component';
 import { StatsService } from './stats.service';
@@ -16,6 +17,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { GolfersComponent } from './golfers/golfers.component';
 import { CoursesComponent } from './courses/courses.component';
+import { ScoresComponent } from './scores/scores.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { CoursesComponent } from './courses/courses.component';
     RoundsComponent,
     GolfersComponent,
     CoursesComponent,
+    ScoresComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { CoursesComponent } from './courses/courses.component';
     MenubarModule,
     RadioButtonModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    DropdownModule
   ],
   providers: [
     StatsService,

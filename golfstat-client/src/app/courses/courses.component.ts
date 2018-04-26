@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {ButtonModule} from 'primeng/button';
 import { StatsService } from '../stats.service';
-import { CoursePlusRating } from '../model/course-plus-rating';
+import { CoursePlusRatings } from '../model/course-plus-ratings';
 import { Course } from '../model/course';
 import { CourseRating } from '../model/course-rating';
 import { Hole } from '../model/hole';
@@ -14,14 +14,14 @@ import { Hole } from '../model/hole';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
-  coursePlusRatings: CoursePlusRating[];
+  coursePlusRatings: CoursePlusRatings[];
   newCourseName: string;
   newCourseTees: string;
   newCourseMensSlope: number;
   newCourseMensRating: number;
   newCourseWomensSlope: number;
   newCourseWomensRating: number;
-  newCoursePlusRatings: CoursePlusRating;
+  newCoursePlusRatings: CoursePlusRatings;
   showButtonText: string[];
   showTable: boolean[];
   selectedLength: string;
@@ -54,7 +54,7 @@ export class CoursesComponent implements OnInit {
   }
 
   getCourses() {
-    this.statsService.getCourses().subscribe(
+    this.statsService.getCoursesPlusRatings().subscribe(
       data => {
         console.log(data);
         this.coursePlusRatings = data;
@@ -105,7 +105,7 @@ export class CoursesComponent implements OnInit {
       }
     }
 
-    this.newCoursePlusRatings = new CoursePlusRating();
+    this.newCoursePlusRatings = new CoursePlusRatings();
 
     // add new Course info
     var newCourse = new Course();
