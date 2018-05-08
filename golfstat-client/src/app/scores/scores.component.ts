@@ -20,7 +20,7 @@ export class ScoresComponent implements OnInit {
   selectedLength: string;
   newScores: Score[];
   holes: Hole[];
-  selectedRound: Round;
+  selectedRound: RoundAndCourse;
   rounds: RoundAndCourse[];
   roundOptions: SelectItem[];
 
@@ -49,8 +49,9 @@ export class ScoresComponent implements OnInit {
             {label:this.rounds[i].round.date+' '+this.rounds[i].coursePlusRatings.course.name, value:this.rounds[i]}
           )
         }
+        this.selectedRound = this.rounds[0];
         this.selectedLength = "front 9";
-        this.holes=this.rounds[0].coursePlusRatings.holes.splice(0,9);
+        this.holes=this.rounds[0].coursePlusRatings.holes.slice(0,9);
         console.log("holes: "+this.holes);
       },
       err => {
@@ -65,13 +66,35 @@ export class ScoresComponent implements OnInit {
 
   courseChanged(value) {
     console.log(value);
-    this.holes=value.coursePlusRatings.holes.splice(0,9);
+    this.holes=value.coursePlusRatings.holes.slice(0,9);
+    this.selectedLength = "front 9";
   }
 
-  lengthChange() {
-    console.log("Length changed: "+this.selectedLength);
+  lengthChange(value) {
+    console.log("Length changed: "+value);
+    let start = 0;
+    let end = 9;
+    if(value === 'front 9') {
+      console.log("1");
+      this.holes=this.selectedRound.coursePlusRatings.holes.slice(0,9)
+      console.log("2 "+this.holes.length);
+    }
+    else if(value === 'back 9') {
+      console.log("3");
+      start = 9;
+      end = 18;
+      this.holes=this.selectedRound.coursePlusRatings.holes.slice(9,18)
+      console.log("4 "+this.holes.length);
+    }
+    else {
+      console.log("5");
+      start = 0;
+      end = 18;
+      this.holes=this.selectedRound.coursePlusRatings.holes.slice(0,18)
+      console.log("6");
+    }
   }
-  
+
   addScores() {
 
   }
