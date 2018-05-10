@@ -15,6 +15,12 @@
         SELECT * from golfer
     </select>
 
+    <select id="selectAllGolfersNotInRound" resultMap="golferResultMap">
+        SELECT * from golfer 
+        where id not in 
+        (SELECT DISTINCT golfer_id from score where round_id = #{roundId})
+    </select>
+    
     <select id="selectNextId" resultType="Long">
         SELECT ifnull(max(id)+1,1) from golfer;
     </select>

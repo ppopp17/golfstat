@@ -10,6 +10,7 @@ import { Hole } from '../model/hole';
 import { RoundAndCourse } from '../model/round-and-course';
 import { Round } from '../model/round';
 import { Course } from '../model/course';
+import { Golfer } from '../model/golfer';
 
 @Component({
   selector: 'app-scores',
@@ -23,6 +24,9 @@ export class ScoresComponent implements OnInit {
   selectedRound: RoundAndCourse;
   rounds: RoundAndCourse[];
   roundOptions: SelectItem[];
+  playerOptions: SelectItem[];
+  players: Golfer[];
+  selectedPlayer: Golfer;
 
   constructor(
     private statsService: StatsService,
@@ -30,7 +34,11 @@ export class ScoresComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.refreshScores();
     this.getCourses();
+  }
+
+  refreshScores() {
     this.newScores = new Array();
     for(let i=0; i<18; i++) {
       let score = new Score();
@@ -50,6 +58,7 @@ export class ScoresComponent implements OnInit {
           )
         }
         this.selectedRound = this.rounds[0];
+        this.getGolfersNotInSelectedRound(this.selectedRound.round.id);
         this.selectedLength = "front 9";
         this.holes=this.rounds[0].coursePlusRatings.holes.slice(0,9);
         console.log("holes: "+this.holes);
@@ -64,10 +73,34 @@ export class ScoresComponent implements OnInit {
     );
   }
 
-  courseChanged(value) {
+  courseChanged(value: RoundAndCourse) {
     console.log(value);
     this.holes=value.coursePlusRatings.holes.slice(0,9);
     this.selectedLength = "front 9";
+    this.getGolfersNotInSelectedRound(value.round.id);
+  }
+
+  getGolfersNotInSelectedRound(roundId: number) {
+    this.statsService.getGolfersNotInRound(roundId).subscribe(
+      data => {
+        console.log(data);
+        this.players = data;
+        this.playerOptions = new Array();
+        for(let i=0; i<this.players.length; i++) {
+          this.playerOptions.push(
+            {label:this.players[i].name, value:this.players[i]}
+          )
+        }
+        this.selectedPlayer = this.players[0];
+      },
+      err => {
+        console.error(err);
+        this.messageService.add({severity:'error', summary:'Retrieve Golfers', detail:err.message});
+      },
+      () => {
+        console.log('done loading rounds and courses');
+      }
+    );
   }
 
   lengthChange(value) {
@@ -96,6 +129,34 @@ export class ScoresComponent implements OnInit {
   }
 
   addScores() {
-
+    let scores = new Array();
+    for(let i=0; i<this.holes.length; i++) {
+      if(this.newScores[i].score !== undefined) {
+        let s = new Score();
+        s.holeId = this.holes[i].id;
+        s.golferId = this.selectedPlayer.id;
+        s.roundId = this.selectedRound.round.id;
+        s.score = this.newScores[i].score;
+        if(this.newScores[i].putts !== undefined) {
+          s.putts = this.newScores[i].putts;
+        }
+        scores.push(s);
+        console.log(s);
+      }
+    }
+    this.statsService.addScores(scores).subscribe(
+      data => {
+        console.log("New scores added, refreshing lists");
+        this.refreshScores();
+        this.getGolfersNotInSelectedRound(this.selectedRound.round.id);
+      },
+      err => {
+        console.error(err);
+        this.messageService.add({severity:'error', summary:'Save New Scores Error', detail:err.message});
+      },
+      () => {
+        //console.log('done loading nav tree');
+      }
+    );
   }
 }

@@ -9,6 +9,7 @@
     <result property="id" column="id" javaType="java.lang.Long"/>
     <result property="holeId" column="hole_id" javaType="java.lang.Long"/>
     <result property="golferId" column="golfer_id" javaType="java.lang.Long"/>
+    <result property="roundId" column="round_id" javaType="java.lang.Long"/>
     <result property="score" column="score" javaType="java.lang.Long"/>
     <result property="putts" column="putts" javaType="java.lang.Long"/>
   </resultMap>
@@ -23,11 +24,12 @@
     </select>
     
  	<insert id="insertNewScore" statementType="PREPARED" parameterType="popp.pat.model.Score">
-	  INSERT INTO round
+	  INSERT INTO score
       (
         id, 
         hole_id, 
         golfer_id,
+        round_id,
         score,
         putts
       )
@@ -36,6 +38,7 @@
         #{id}, 
         #{holeId},
 		#{golferId},
+		#{roundId},
 		#{score},
 		#{putts}
 	  )

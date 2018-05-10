@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import { Stats } from './model/stats';
 import { Golfer } from './model/golfer';
 import { CoursePlusRatings } from './model/course-plus-ratings';
@@ -21,6 +21,10 @@ export class StatsService {
 
   getGolfers(): Observable<any> {
     return this.http.get<Golfer[]>(environment.serviceURL+'getGolfers');
+  }
+
+  getGolfersNotInRound(roundId: number): Observable<any> {
+    return this.http.get<Golfer[]>(environment.serviceURL+'getGolfersNotInRound/'+roundId);
   }
 
   addNewGolfer(golfer: Golfer): Observable<any> {
@@ -47,4 +51,9 @@ export class StatsService {
     });
   }
 
+  addScores(newScores: Score[]): Observable<any> {
+    return this.http.post(environment.serviceURL+'addNewScores', newScores, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
 }

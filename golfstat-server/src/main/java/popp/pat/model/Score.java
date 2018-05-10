@@ -4,6 +4,7 @@ public class Score {
 	private Long id;
 	private Long holeId;
 	private Long golferId;
+	private Long roundId;
 	private Long score;
 	private Long putts;
 	public Long getId() {
@@ -23,6 +24,12 @@ public class Score {
 	}
 	public void setGolferId(Long golferId) {
 		this.golferId = golferId;
+	}
+	public Long getRoundId() {
+		return roundId;
+	}
+	public void setRoundId(Long roundId) {
+		this.roundId = roundId;
 	}
 	public Long getScore() {
 		return score;

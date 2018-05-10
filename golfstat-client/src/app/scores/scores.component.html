@@ -1,4 +1,5 @@
 <h3>Scores</h3>
+<p-dropdown [options]="playerOptions" [(ngModel)]="selectedPlayer"></p-dropdown><br/>
 <p-dropdown [options]="roundOptions" [(ngModel)]="selectedRound" (onChange)="courseChanged($event.value)"></p-dropdown>
 <p-radioButton name="lengthGroup" value="front 9" label="front 9" [(ngModel)]="selectedLength" (onClick)="lengthChange('front 9')"></p-radioButton>
 <p-radioButton *ngIf="selectedRound && selectedRound.coursePlusRatings.holes.length > 9" name="lengthGroup" value="back 9" label="back 9" [(ngModel)]="selectedLength" (onClick)="lengthChange('back 9')"></p-radioButton>

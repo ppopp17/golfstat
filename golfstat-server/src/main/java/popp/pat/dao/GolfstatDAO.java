@@ -65,6 +65,28 @@ public class GolfstatDAO {
 		return golfers;
 	}
 	
+	//getGolfersNotInRound
+	public static List<Golfer> getGolfersNotInRound(Integer roundId) {
+		List<Golfer> golfers = null;
+		SqlSession session = null;
+		try {
+			Map<String,Integer> params = new HashMap<String,Integer>();
+			params.put("roundId", roundId);
+			session = SQLiteDriverConnection.getSession().openSession();
+			golfers = session.selectList("golfer.selectAllGolfersNotInRound", params);
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return golfers;
+	}
+	
 	public static Golfer addNewGolfer(Golfer newGolfer) {
 		Golfer success = null;
 		SqlSession session = null;

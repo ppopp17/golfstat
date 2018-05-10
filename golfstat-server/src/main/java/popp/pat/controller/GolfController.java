@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -48,6 +49,18 @@ public class GolfController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Golfer> getGolfers() {
 		List<Golfer> golfers = GolfstatDAO.getAllGolfers();
+		if(golfers == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return golfers;
+	}
+	
+	@GET
+	@Path("/getGolfersNotInRound/{roundId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Golfer> getGolfersNotInRound(@PathParam("roundId") Integer roundId) {
+		List<Golfer> golfers = GolfstatDAO.getGolfersNotInRound(roundId);
 		if(golfers == null) {
 			Response response = Response.serverError().entity("Some DB error").build();
 			throw new WebApplicationException(response);
