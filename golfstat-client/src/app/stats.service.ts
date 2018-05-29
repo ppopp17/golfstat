@@ -6,6 +6,7 @@ import { Golfer } from './model/golfer';
 import { CoursePlusRatings } from './model/course-plus-ratings';
 import { Course } from './model/course';
 import { RoundAndCourse } from './model/round-and-course';
+import { Score } from './model/score';
 import { environment } from '../environments/environment';
 
 @Injectable()
