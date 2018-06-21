@@ -5,6 +5,8 @@ import { Stats } from './model/stats';
 import { Golfer } from './model/golfer';
 import { CoursePlusRatings } from './model/course-plus-ratings';
 import { Course } from './model/course';
+import { Score } from './model/score';
+import { Round } from './model/round';
 import { RoundAndCourse } from './model/round-and-course';
 import { environment } from '../environments/environment';
 
@@ -53,6 +55,12 @@ export class StatsService {
 
   addScores(newScores: Score[]): Observable<any> {
     return this.http.post(environment.serviceURL+'addNewScores', newScores, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
+  addNewRound(newRound: Round): Observable<any> {
+    return this.http.post(environment.serviceURL+'addNewRound', newRound, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }

@@ -338,4 +338,34 @@ public class GolfstatDAO {
 
 		return success;
 	}
+	
+	public static Round addNewRound(Round round) {
+		Round success = null;
+		SqlSession session = null;
+
+		try {
+			session = SQLiteDriverConnection.getSession().openSession();
+			Long nextId = session.selectOne("round.selectNextId");
+			if(nextId == null) {
+				throw new Exception("was not able to get next score Id");
+			}
+			round.setId(nextId);
+			int count = session.insert("round.insertNewRound", round);
+			if(count != 1) {
+				throw new Exception("was not able to insert new round");
+			}
+			session.commit();
+			success = round;
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return success;
+	}
 }

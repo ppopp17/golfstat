@@ -9,11 +9,11 @@
             <dataSource type="POOLED">
                 <property name="driver" value="org.sqlite.JDBC"/>
                 <!-- the following is for your leveno Yoga -->
-		<!--
                 <property name="url" value="jdbc:sqlite:C:/Users/ppopp/Google Drive/Home/golfScored.db3"/>
-                -->
                 <!-- the following is for your deciBel Computer -->
+		<!--
                 <property name="url" value="jdbc:sqlite:/home/ppopp/golfScored.db3"/>
+                -->
             </dataSource>
         </environment>
     </environments>

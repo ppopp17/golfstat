@@ -1,3 +1,5 @@
-<p>
-  rounds works!
-</p>
+<h2>Rounds</h2>
+<p-dropdown [options]="courseOptions" [(ngModel)]="selectedCourse"></p-dropdown>
+Date: <input pInputText [(ngModel)]="courseDate"/>
+<br/>
+<button pButton type="button" label="Add Round" (click)="addRound()"></button>

@@ -16,6 +16,7 @@ import popp.pat.dao.GolfstatDAO;
 import popp.pat.model.Course;
 import popp.pat.model.CoursePlusRatings;
 import popp.pat.model.Golfer;
+import popp.pat.model.Round;
 import popp.pat.model.RoundAndCourse;
 import popp.pat.model.Score;
 import popp.pat.model.Stats;
@@ -130,6 +131,19 @@ public class GolfController {
 		return rounds;
 	}
 	
+	@POST
+	@Path("/addNewRound")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Round addNewRound(Round round) {
+		Round newRound = GolfstatDAO.addNewRound(round);
+		if(newRound == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return newRound;
+	}
+
 	@POST
 	@Path("/addNewScores")
 	@Produces(MediaType.APPLICATION_JSON)
