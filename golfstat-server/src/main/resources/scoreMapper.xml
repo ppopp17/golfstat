@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="score">
 
-  <resultMap id="scoreResultMap" type="popp.pat.model.Score"> 
+  <resultMap id="scoreResultMap" type="popp.pat.model.Score">
     <result property="id" column="id" javaType="java.lang.Long"/>
     <result property="holeId" column="hole_id" javaType="java.lang.Long"/>
     <result property="golferId" column="golfer_id" javaType="java.lang.Long"/>
@@ -14,30 +14,86 @@
     <result property="putts" column="putts" javaType="java.lang.Long"/>
     <result property="circle" column="circle" javaType="java.lang.Long"/>
   </resultMap>
-    
-    <select id="selectAllScoresForRound" resultMap="scoreResultMap">
-        SELECT * from score
-        WHERE round_id = #{roundId}
-    </select>
 
-    <select id="selectNextId" resultType="Long">
-        SELECT ifnull(max(id)+1,1) from score;
-    </select>
-    
+  <resultMap id="totalAndPuttsResultMap" type="popp.pat.model.TotalAndPutts">
+    <result property="total" column="total" javaType="java.lang.Long"/>
+    <result property="putts" column="putts" javaType="java.lang.Long"/>
+  </resultMap>
+
+  <resultMap id="averagePerParResultMap" type="popp.pat.model.AveragePerPar">
+    <result property="par" column="par" javaType="java.lang.Long"/>
+    <result property="score" column="score" javaType="java.lang.Float"/>
+    <result property="putts" column="putts" javaType="java.lang.Float"/>
+  </resultMap>
+
+  <select id="selectNextId" resultType="Long">
+      SELECT ifnull(max(id)+1,1) from score;
+  </select>
+
+  <select id="selectAllScoresForRound" resultMap="scoreResultMap">
+      SELECT * from score
+      WHERE round_id = #{roundId}
+  </select>
+
+  <select id="selectRoundsForGolfer" resultType="Long">
+      SELECT distinct(round_id) from score
+      WHERE golfer_id = #{golferId}
+  </select>
+
+  <select id="selectHolesForRoundGolfer" resultType="Long">
+      SELECT count(*) from score
+      WHERE golfer_id = #{golferId}
+      AND round_id = #{roundId}
+  </select>
+
+  <select id="selectTotalAndPutsForRoundGolfer" resultMap="totalAndPuttsResultMap">
+    SELECT sum(score) as total, sum(putts) as putts
+		from score
+    WHERE golfer_id = #{golferId}
+    AND round_id = #{roundId}
+  </select>
+
+  <select id="selectAveragePerParForRoundGolfer" resultMap="averagePerParResultMap">
+    select par, avg(score) as score, avg(putts) as putts
+		from score, hole
+    WHERE golfer_id = #{golferId}
+    AND round_id = #{roundId}
+    AND score.hole_id = hole.id
+		GROUP BY par
+  </select>
+
+  <select id="selectGIRForRoundGolfer" resultType="Long">
+    SELECT count(*)
+		from score, hole
+    WHERE golfer_id = #{golferId}
+    AND round_id = #{roundId}
+		AND score.hole_id = hole.id
+		AND par-(score-putts) > 1
+  </select>
+
+  <select id="selectBIRForRoundGolfer" resultType="Long">
+    SELECT count(*)
+		from score, hole
+    WHERE golfer_id = #{golferId}
+    AND round_id = #{roundId}
+		AND score.hole_id = hole.id
+		AND par-(score-putts) > 0
+  </select>
+
  	<insert id="insertNewScore" statementType="PREPARED" parameterType="popp.pat.model.Score">
 	  INSERT INTO score
       (
-        id, 
-        hole_id, 
+        id,
+        hole_id,
         golfer_id,
         round_id,
         score,
         putts,
         circle
       )
-      VALUES	
+      VALUES
       (
-        #{id}, 
+        #{id},
         #{holeId},
 		#{golferId},
 		#{roundId},
@@ -46,5 +102,5 @@
 		#{circle}
 	  )
 	</insert>
-    
+
 </mapper>

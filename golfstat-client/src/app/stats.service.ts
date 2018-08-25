@@ -8,6 +8,7 @@ import { Course } from './model/course';
 import { Score } from './model/score';
 import { Round } from './model/round';
 import { RoundAndCourse } from './model/round-and-course';
+import { Score } from './model/score';
 import { environment } from '../environments/environment';
 
 @Injectable()
