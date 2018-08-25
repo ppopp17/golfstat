@@ -12,6 +12,7 @@
     <result property="roundId" column="round_id" javaType="java.lang.Long"/>
     <result property="score" column="score" javaType="java.lang.Long"/>
     <result property="putts" column="putts" javaType="java.lang.Long"/>
+    <result property="circle" column="circle" javaType="java.lang.Long"/>
   </resultMap>
     
     <select id="selectAllScoresForRound" resultMap="scoreResultMap">
@@ -31,7 +32,8 @@
         golfer_id,
         round_id,
         score,
-        putts
+        putts,
+        circle
       )
       VALUES	
       (
@@ -40,7 +42,8 @@
 		#{golferId},
 		#{roundId},
 		#{score},
-		#{putts}
+		#{putts},
+		#{circle}
 	  )
 	</insert>
     

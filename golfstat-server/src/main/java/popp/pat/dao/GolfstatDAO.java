@@ -12,6 +12,7 @@ import popp.pat.model.Course;
 import popp.pat.model.CoursePlusRatings;
 import popp.pat.model.CourseRating;
 import popp.pat.model.Golfer;
+import popp.pat.model.GolferStats;
 import popp.pat.model.Hole;
 import popp.pat.model.Round;
 import popp.pat.model.RoundAndCourse;
@@ -367,5 +368,25 @@ public class GolfstatDAO {
         }
 
 		return success;
+	}
+	
+	public static List<GolferStats> getPlayerStats(Golfer golfer) {
+		List<GolferStats> golferStats = null;
+		SqlSession session = null;
+
+		try {
+			session = SQLiteDriverConnection.getSession().openSession();
+			golferStats = session.selectList("stats.selectGolferStats", golfer);
+		}
+		catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+		return golferStats;
 	}
 }

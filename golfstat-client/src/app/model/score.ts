@@ -5,4 +5,5 @@ export class Score {
   roundId: number;
 	score: number;
 	putts: number;
+  circle: number;
 }

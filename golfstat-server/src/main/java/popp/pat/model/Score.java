@@ -7,6 +7,8 @@ public class Score {
 	private Long roundId;
 	private Long score;
 	private Long putts;
+	private Long circle;
+	
 	public Long getId() {
 		return id;
 	}
@@ -42,5 +44,11 @@ public class Score {
 	}
 	public void setPutts(Long putts) {
 		this.putts = putts;
+	}
+	public Long getCircle() {
+		return circle;
+	}
+	public void setCircle(Long circle) {
+		this.circle = circle;
 	}
 }

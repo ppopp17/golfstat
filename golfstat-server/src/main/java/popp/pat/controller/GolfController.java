@@ -16,6 +16,7 @@ import popp.pat.dao.GolfstatDAO;
 import popp.pat.model.Course;
 import popp.pat.model.CoursePlusRatings;
 import popp.pat.model.Golfer;
+import popp.pat.model.GolferStats;
 import popp.pat.model.Round;
 import popp.pat.model.RoundAndCourse;
 import popp.pat.model.Score;
@@ -155,5 +156,19 @@ public class GolfController {
 			throw new WebApplicationException(response);
 		}
 		return newScores;
+	}
+
+	@GET
+	@Path("/getPlayerStats/{playerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<GolferStats> getPlayerStats(@PathParam("playerId") Long playerId) {
+		Golfer golfer = new Golfer();
+		golfer.setId(playerId);
+		List<GolferStats> playerStats = GolfstatDAO.getPlayerStats(golfer);
+		if(playerStats == null) {
+			Response response = Response.serverError().entity("Some DB error").build();
+			throw new WebApplicationException(response);
+		}
+		return playerStats;
 	}
 }

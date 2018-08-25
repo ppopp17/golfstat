@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/components/common/messageservice';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {ButtonModule} from 'primeng/button';
-import {DropdownModule} from 'primeng/dropdown';
-import {SelectItem} from 'primeng/api';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { SelectItem } from 'primeng/api';
 import { StatsService } from '../stats.service';
 import { Score } from '../model/score';
 import { Hole } from '../model/hole';
@@ -139,6 +140,12 @@ export class ScoresComponent implements OnInit {
         s.score = this.newScores[i].score;
         if(this.newScores[i].putts !== undefined) {
           s.putts = this.newScores[i].putts;
+        }
+        if(this.newScores[i].circle !== undefined) {
+          s.circle = 1;
+        }
+        else {
+          s.circle = 0;
         }
         scores.push(s);
         console.log(s);

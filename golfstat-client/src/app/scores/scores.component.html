@@ -5,7 +5,7 @@
 <p-radioButton *ngIf="selectedRound && selectedRound.coursePlusRatings.holes.length > 9" name="lengthGroup" value="back 9" label="back 9" [(ngModel)]="selectedLength" (onClick)="lengthChange('back 9')"></p-radioButton>
 <p-radioButton *ngIf="selectedRound && selectedRound.coursePlusRatings.holes.length > 9" name="lengthGroup" value="18" label="18" [(ngModel)]="selectedLength" (onClick)="lengthChange('18')"></p-radioButton>
 <table>
-  <tr><th>Hole</th><th>Par</th><th>Length</th><th>Score</th><th>Putts</th></tr>
+  <tr><th>Hole</th><th>Par</th><th>Length</th><th>Score</th><th>Putts</th><th>Circle</th></tr>
   <tr *ngFor="let score of newScores; let i = index">
     <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))">{{holes[i].number}}</td>
       <!--
@@ -13,8 +13,9 @@
     -->
     <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))">{{holes[i].par}}</td>
     <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))">{{holes[i].length}}</td>
-    <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))"><input pInputText [(ngModel)]="score.score"/></td>
-    <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))"><input pInputText [(ngModel)]="score.putts"/></td>
+    <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))"><input size="3" pInputText [(ngModel)]="score.score"/></td>
+    <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))"><input size="3" pInputText [(ngModel)]="score.putts"/></td>
+    <td *ngIf="holes && (i<9 || (selectedLength === '18' && holes.length > 9))"><p-checkbox value="1" [(ngModel)]="score.circle"></p-checkbox></td>
   </tr>
 </table>
 <button pButton type="button" label="Add Scores" (click)="addScores()"></button>

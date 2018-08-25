@@ -25,5 +25,6 @@
         <mapper resource="courseRatingMapper.xml"/>
         <mapper resource="holeMapper.xml"/>
         <mapper resource="scoreMapper.xml"/>
+        <mapper resource="statsMapper.xml"/>
     </mappers>   
 </configuration>

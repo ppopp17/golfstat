@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 import { GrowlModule } from 'primeng/primeng';
 import {MenubarModule} from 'primeng/menubar';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
 import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 
@@ -38,7 +39,8 @@ import { ScoresComponent } from './scores/scores.component';
     RadioButtonModule,
     FormsModule,
     ButtonModule,
-    DropdownModule
+    DropdownModule,
+    CheckboxModule
   ],
   providers: [
     StatsService,
